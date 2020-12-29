@@ -3,8 +3,11 @@ package com.ctsi.mapper;
 import com.ctsi.model.AccessToken;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
+/**
+ *  @author: wuyufei
+ *  @Date: 2020/12/29 14:11
+ *  @Description: token
+ */
 @Mapper
 public interface TokenMapper {
     //获取token
