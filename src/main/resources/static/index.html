@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>spring-boot-demo-task-quartz</title>
+    <title>企业微信一键建群应用</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.4.9/theme-chalk/index.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/vue/2.5.17/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/vue-resource/1.5.1/vue-resource.min.js"></script>
@@ -10,11 +10,11 @@
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
 
     <style>
-        #top {
-            /*background: #20A0FF;*/
-            padding: 5px;
-            /*overflow: hidden*/
-        }
+        /*#top {*/
+        /*    !*background: #20A0FF;*!*/
+        /*    padding: 5px;*/
+        /*    !*overflow: hidden*!*/
+        /*}*/
         /*.item .el-form-item_label{*/
         /*    color: wheat;*/
         /*}*/
@@ -23,10 +23,15 @@
 </head>
 <body>
 <div id="job">
-    <div id="top">
-        <p>设置群名称</p><el-input v-model="message_groupName" placeholder="输入群名称，可为空" maxlength="50" style="width:50%;text-align:center;padding-bottom: 5px"></el-input>
-        <p>设置群主</p><el-input v-model="message_owner" placeholder="输入群主用户id，可为空" style="width:30%;text-align:center;padding-bottom: 5px"></el-input>
-        <el-button size="small" type="primary" plain @click="search" :loading="loading" icon="el-icon-search">查询</el-button>
+    <p style="text-align:center;padding-bottom: 20px">企业微信一键建群应用</p>
+    <div style="text-align:center">
+        <p style="display:inline;width:20%">设置群名</p>
+        <el-input v-model="message_groupName" placeholder="输入群名称，可为空" maxlength="50" style="width:50%;text-align:center;padding-bottom:10px"></el-input>
+        <br/>
+        <p style="display:inline;width:20%">设置群主</p>
+        <el-input v-model="message_owner" placeholder="输入群主用户id，可为空" style="width:50%;text-align:center;padding-bottom:10px"></el-input>
+<!--        <el-button size="small" type="primary" plain @click="search" :loading="loading" icon="el-icon-search">查询</el-button>-->
+        <br/>
         <el-button size="small" type="primary" plain @click="submit" icon="el-icon-plus">确认建群</el-button>
     </div>
     <br/>
@@ -48,11 +53,10 @@
     var vue = new Vue({
         el: "#job",
         data: {
-            //
+            //群名、群主表单数据
             message_groupName: '',
-            message_groupName1: '',
             message_owner: '',
-            //
+            //复选框数据
             checkBoxData: [],
             //表格当前页数据
             tableData: [],
@@ -123,7 +127,13 @@
                     groupName: this.message_groupName,
                     owner: this.message_owner
                 }).then(function (res) {
-                    console.log(res.body)
+                    console.log(res.body);
+                    if (res.body.errcode === 0){
+                        alert('您已创建群聊成功！');
+                        vue.loadData();
+                    }else{
+                        alert('创建群聊失败，请再次尝试');
+                    }
                 })
             }
         }
