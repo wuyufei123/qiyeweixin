@@ -2,6 +2,7 @@ package com.ctsi.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ctsi.mapper.TokenMapper;
 import com.ctsi.service.ApiService;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -23,8 +25,10 @@ import java.util.List;
 @Service
 public class ApiServiceImpl implements ApiService {
 	private final Logger log = LoggerFactory.getLogger(ApiServiceImpl.class);
+	@Autowired
+	TokenMapper tokenMapper;
 	//两小时后重新获取
-	private String access_token ="xiAQ4qROIdU8uekJPSZ87Hd833k5vNs5-CyQ_UEpD2E4JG-e1n6_wY-sTmlXwNYGFsLzBcZV7q-nUc07gzwo0GiolKtL2iflrvmalOlrD_Xksf4sQFW-nA0tYDEbVZlhiMiJey7yfih6Xqpz8m7zuIcIB0u39viVQzmRUXQbGHMPzBFcNfpl8-eIgIfNTN9fhTnARl8hzVPo171lP8SN-Q";
+	//private String access_token ="xiAQ4qROIdU8uekJPSZ87Hd833k5vNs5-CyQ_UEpD2E4JG-e1n6_wY-sTmlXwNYGFsLzBcZV7q-nUc07gzwo0GiolKtL2iflrvmalOlrD_Xksf4sQFW-nA0tYDEbVZlhiMiJey7yfih6Xqpz8m7zuIcIB0u39viVQzmRUXQbGHMPzBFcNfpl8-eIgIfNTN9fhTnARl8hzVPo171lP8SN-Q";
 
 	/**
 	 * @Description 获取用户列表
@@ -44,7 +48,7 @@ public class ApiServiceImpl implements ApiService {
 		try {
 //			URL realUrl = new URL(appendString(url, access_token, department_id, fetch_child));
 			//获取企业内部所有用户信息
-			URL realUrl = new URL("https://qyapi.weixin.qq.com/cgi-bin/user/simplelist?access_token="+access_token+"&department_id=1&fetch_child=1");
+			URL realUrl = new URL("https://qyapi.weixin.qq.com/cgi-bin/user/simplelist?access_token="+tokenMapper.getToken().getToken()+"&department_id=1&fetch_child=1");
 			// 打开和URL之间的连接
 			URLConnection connection = realUrl.openConnection();
 			// 设置通用的请求属性
@@ -104,7 +108,7 @@ public class ApiServiceImpl implements ApiService {
 		log.info("创建群聊参数：" + param);
 
 		JSONObject result = new JSONObject();
-		HttpPost post = new HttpPost("https://qyapi.weixin.qq.com/cgi-bin/appchat/create?access_token=" + access_token);
+		HttpPost post = new HttpPost("https://qyapi.weixin.qq.com/cgi-bin/appchat/create?access_token=" + tokenMapper.getToken().getToken());
 		try{
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			post.setHeader("Content-Type","application/json;charset=utf-8");
@@ -151,7 +155,7 @@ public class ApiServiceImpl implements ApiService {
 		param.put("text",text);
 
 		JSONObject result = new JSONObject();
-		HttpPost post = new HttpPost("https://qyapi.weixin.qq.com/cgi-bin/appchat/send?access_token=" + access_token);
+		HttpPost post = new HttpPost("https://qyapi.weixin.qq.com/cgi-bin/appchat/send?access_token=" + tokenMapper.getToken().getToken());
 		try{
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			post.setHeader("Content-Type","application/json;charset=utf-8");
