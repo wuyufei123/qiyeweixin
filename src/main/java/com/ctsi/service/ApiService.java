@@ -8,7 +8,7 @@ import java.util.List;
 public interface ApiService {
 	public JSONObject getUserList();
 
-	public JSONObject createChatGroup(JSONArray userlist);
+	public JSONObject createChatGroup(JSONObject groupParam);
 
-	public JSONObject sendMsgChatGroup(String chat_id, JSONArray userlist);
+	public JSONObject sendMsgChatGroup(String chat_id);
 }

@@ -36,9 +36,9 @@ public class apiController {
 
 	//根据所选用户创建群聊
 	@PostMapping("/createChat")
-	public JSONObject createChat(@RequestBody JSONArray user_list) {
+	public JSONObject createChat(@RequestBody JSONObject groupParam) {
 //		List<String> user_list = new ArrayList<>(); //["cheng","chen","sang"]
-		JSONObject result = apiService.createChatGroup(user_list);
+		JSONObject result = apiService.createChatGroup(groupParam);
 //		System.out.println(result);
 		return result;
 	}

@@ -15,15 +15,19 @@
             padding: 5px;
             /*overflow: hidden*/
         }
+        /*.item .el-form-item_label{*/
+        /*    color: wheat;*/
+        /*}*/
     </style>
 
 </head>
 <body>
 <div id="job">
     <div id="top">
-        <el-button size="small" type="primary" plain @click="search" :loading="loading" icon="el-icon-search">查询
-        </el-button>
-        <el-button size="small" type="primary" plain @click="handleadd" icon="el-icon-plus">确认建群</el-button>
+        <p>设置群名称</p><el-input v-model="message_groupName" placeholder="输入群名称，可为空" maxlength="50" style="width:50%;text-align:center;padding-bottom: 5px"></el-input>
+        <p>设置群主</p><el-input v-model="message_owner" placeholder="输入群主用户id，可为空" style="width:30%;text-align:center;padding-bottom: 5px"></el-input>
+        <el-button size="small" type="primary" plain @click="search" :loading="loading" icon="el-icon-search">查询</el-button>
+        <el-button size="small" type="primary" plain @click="submit" icon="el-icon-plus">确认建群</el-button>
     </div>
     <br/>
     <div>
@@ -32,40 +36,7 @@
             <el-table-column prop="name" label="用户名称" show-overflow-tooltip align="center"></el-table-column>
             <el-table-column prop="department" label="用户所在部门" sortable align="center" :formatter="formatState"></el-table-column>
             <el-table-column prop="userid" label="用户ID" align="center"></el-table-column>
-            <!--            <el-table-column prop="triggerName" label="触发器名称" align="center"></el-table-column>-->
-            <!--            <el-table-column prop="triggerGroup" label="触发器所在组" sortable align="center"></el-table-column>-->
-            <!--            <el-table-column prop="cronExpression" label="表达式" align="center"></el-table-column>-->
-            <!--            <el-table-column prop="timeZoneId" label="时区" align="center"></el-table-column>-->
-            <!--            <el-table-column prop="triggerState" label="状态" align="center" :formatter="formatState"></el-table-column>-->
-            <!--            <el-table-column label="操作" width="300" align="center">-->
-            <!--                <template scope="scope">-->
-            <!--                    <el-button size="small" type="warning" @click="handlePause(scope.$index, scope.row)">-->
-            <!--                        暂停-->
-            <!--                    </el-button>-->
-            <!--                    <el-button size="small" type="info" @click="handleResume(scope.$index, scope.row)">-->
-            <!--                        恢复-->
-            <!--                    </el-button>-->
-            <!--                    <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">-->
-            <!--                        删除-->
-            <!--                    </el-button>-->
-            <!--                    <el-button size="small" type="success" @click="handleUpdate(scope.$index, scope.row)">-->
-            <!--                        修改-->
-            <!--                    </el-button>-->
-            <!--                </template>-->
-            <!--            </el-table-column>-->
         </el-table>
-
-        <!--        <div align="center">-->
-        <!--            <el-pagination-->
-        <!--                    @size-change="handleSizeChange"-->
-        <!--                    @current-change="handleCurrentChange"-->
-        <!--                    :current-page="currentPage"-->
-        <!--                    :page-sizes="[2, 10, 20, 30, 40]"-->
-        <!--                    :page-size="pagesize"-->
-        <!--                    layout="total, sizes, prev, pager, next, jumper"-->
-        <!--                    :total="totalCount">-->
-        <!--            </el-pagination>-->
-        <!--        </div>-->
     </div>
 </div>
 
@@ -77,6 +48,11 @@
     var vue = new Vue({
         el: "#job",
         data: {
+            //
+            message_groupName: '',
+            message_groupName1: '',
+            message_owner: '',
+            //
             checkBoxData: [],
             //表格当前页数据
             tableData: [],
@@ -94,31 +70,17 @@
             dialogFormVisible: false,
             //修改对话框默认可见性
             updateFormVisible: false,
-            userform:{
-                user_list:[]
-            },
-            //提交的表单
-            form: {
-                jobName: '',
-                jobGroup: '',
-                cronExpression: ''
-            },
-            updateform: {
-                jobName: '',
-                jobGroup: '',
-                cronExpression: ''
+            createGroupForm:{
+                userlist: [],
+                groupName: '',
+                owner: ''
             },
             loading: false
         },
         methods: {
             // 获取复选框值
             changeCheckBoxValue: function(val) {
-                val.forEach(v =>{
-                    if (this.checkBoxData.indexOf(v.userid)===-1){
-                        this.checkBoxData.push(v.userid);
-                        // console.log(v.userid);
-                    }
-                })
+                this.checkBoxData = val;
             },
             // 格式化状态
             formatState: function (row, column, cellValue, index) {
@@ -141,15 +103,27 @@
                     console.log('failed');
                 });
             },
-
             // 搜索
             search: function () {
                 this.loadData(this.currentPage, this.pagesize);
             },
-            handleadd: function () {
+            //提交创建群聊数据
+            submit: function () {
+                console.log(this.message);
                 console.log(this.checkBoxData);
-                this.$http.post('/api/createChat',this.checkBoxData).then(function (res) {
-                    console.log(res)
+                var userlist = [];
+                this.checkBoxData.forEach(v =>{
+                    if (userlist.indexOf(v.userid)===-1){
+                        userlist.push(v.userid);
+                    }
+                });
+                console.log(userlist);
+                this.$http.post('/api/createChat',{
+                    userlist: userlist,
+                    groupName: this.message_groupName,
+                    owner: this.message_owner
+                }).then(function (res) {
+                    console.log(res.body)
                 })
             }
         }

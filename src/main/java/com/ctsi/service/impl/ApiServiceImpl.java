@@ -24,7 +24,7 @@ import java.util.List;
 public class ApiServiceImpl implements ApiService {
 	private final Logger log = LoggerFactory.getLogger(ApiServiceImpl.class);
 	//两小时后重新获取
-	private String access_token ="52dQRUlhrnsdDFqELM9lifqEcSEADjHXh_gjaFAJmcASrFUnMsPQLHlmkpSA8wcRTlMeT0gX4XCnWP6a-gp0UK3EwAiGO7hNajNwgsuVQm-y-Hj3WgJNZAbernq-EB3LUISuHoDTwjtPr6YoFZ9GvJGe4GzGuIxaGc63h5ZTJGZWJwQEkS0Qnm_CwK8YqIF21Mp1E-FjJG8KA8CsWyJ7gA";
+	private String access_token ="xiAQ4qROIdU8uekJPSZ87Hd833k5vNs5-CyQ_UEpD2E4JG-e1n6_wY-sTmlXwNYGFsLzBcZV7q-nUc07gzwo0GiolKtL2iflrvmalOlrD_Xksf4sQFW-nA0tYDEbVZlhiMiJey7yfih6Xqpz8m7zuIcIB0u39viVQzmRUXQbGHMPzBFcNfpl8-eIgIfNTN9fhTnARl8hzVPo171lP8SN-Q";
 
 	/**
 	 * @Description 获取用户列表
@@ -96,11 +96,11 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
-	public JSONObject createChatGroup(JSONArray userlist){
+	public JSONObject createChatGroup(JSONObject groupParam){
 		JSONObject param = new JSONObject();
-		param.put("name","");
-		param.put("owner","");
-		param.put("userlist",userlist);
+		param.put("name", groupParam.get("groupName"));
+		param.put("owner", groupParam.get("owner"));
+		param.put("userlist", groupParam.get("userlist"));
 		log.info("创建群聊参数：" + param);
 
 		JSONObject result = new JSONObject();
@@ -134,14 +134,14 @@ public class ApiServiceImpl implements ApiService {
 		}
 		log.info("创建群聊，返回结果："+ result);
 		if(result.get("errcode").equals(0)){
-			JSONObject sendMsg = sendMsgChatGroup(result.get("chatid").toString(),userlist);
+			JSONObject sendMsg = sendMsgChatGroup(result.get("chatid").toString());
 			result.put("sendMsg",sendMsg.get("errcode"));
 		}
 		return result;
 	}
 
-	@Override
-	public JSONObject sendMsgChatGroup(String chat_id, JSONArray userlist){
+//	@Override
+	public JSONObject sendMsgChatGroup(String chat_id){
 
 		JSONObject param = new JSONObject();
 		param.put("chatid",chat_id);
