@@ -15,18 +15,24 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * @author: wuyufei
+ * @Date: 2020/12/30 11:13
+ * @Description: 定时获取token
+ */
 @Configuration
 @EnableScheduling
 public class AccessTokenCron {
     public static final Logger logger = LoggerFactory.getLogger(HttpClientHelper.class);
     //获取token接口
-    public static final String GETTOKEN = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ww353786818bbff142&corpsecret=zjztC61z33Xi-IpTAvb9SjFk0IkMs5KqMuqqt7vYd68";
+    public static final String GETTOKEN = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ww353786818bbff142&corpsecret=dCG2rGujuYvbyMzBFikNglg0Y1YQAplu1B8oDp4XTMQ";
     @Autowired
     TokenMapper tokenMapper;
     @Autowired
     HttpClientHelper httpClientHelper;
 
-    @Scheduled(cron = "5 * * * * ? ")
+    @Scheduled(cron = "0 0 * * * ? ")
     public void taskToken() {
         Map<String, String> param = new HashMap<>();
         //读库

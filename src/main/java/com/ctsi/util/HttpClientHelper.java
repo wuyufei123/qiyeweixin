@@ -149,6 +149,8 @@ public class HttpClientHelper {
         }
     }
 
+
+
     /**
      * 返回连接池
      *
@@ -743,8 +745,8 @@ public class HttpClientHelper {
             if (response != null && response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 /*String resultStr = EntityUtils.toString(response.getEntity(), "utf-8");*/
                 //判断返回数据类型
-                array = JSONArray.parseArray(EntityUtils.toString(response.getEntity(), "utf-8"));
-                //result = JSONObject.parseObject(EntityUtils.toString(response.getEntity(), "utf-8"));
+              //  array = JSONArray.parseArray(EntityUtils.toString(response.getEntity(), "utf-8"));
+                result = JSONObject.parseObject(EntityUtils.toString(response.getEntity(), "utf-8"));
             }
             result.put("data",array);
         } catch (Exception e) {

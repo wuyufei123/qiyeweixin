@@ -18,4 +18,6 @@ public class WeChatApiConstant {
     public static final String CREATEGROUP = "https://qyapi.weixin.qq.com/cgi-bin/appchat/create?access_token=";
     //进入群聊发送一段话
     public static final String GROUPTALK = "https://qyapi.weixin.qq.com/cgi-bin/appchat/send?access_token=";
+    //获取部门列表
+    public static final String DEPARMENTLIST="https://qyapi.weixin.qq.com/cgi-bin/department/list?access_token=";
 }

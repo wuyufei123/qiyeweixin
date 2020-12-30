@@ -94,6 +94,7 @@ public class ApiServiceImpl implements ApiService {
         return jsonObject;
     }
 
+    //创建群聊
     @Override
     public JSONObject createChatGroup(JSONObject groupParam) {
         JSONObject param = new JSONObject();
