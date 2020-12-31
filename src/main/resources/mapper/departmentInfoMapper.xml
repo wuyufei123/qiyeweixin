@@ -3,9 +3,15 @@
 <mapper namespace="com.ctsi.mapper.DepartmentInfoMapper">
     <!--定时入库部门 -->
     <insert id="insert" parameterType="com.ctsi.model.DepartmentInfo">
-            insert into deparment_info values (#{id},#{name},#{nameEn},#{parentId},#{order})
+            insert into deparment_info values (#{id},#{name},#{nameEn},#{parentId},#{order},#{departmentName})
     </insert>
     <delete id="delete">
             delete from deparment_info
     </delete>
+    <select id="selectById" resultType="com.ctsi.model.DepartmentInfo">
+        SELECT
+        *
+        FROM deparment_info
+        WHERE id = #{id}
+    </select>
 </mapper>

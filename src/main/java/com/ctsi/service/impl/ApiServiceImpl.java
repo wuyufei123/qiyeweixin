@@ -1,9 +1,14 @@
 package com.ctsi.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ctsi.constant.WeChatApiConstant;
+import com.ctsi.mapper.DepartmentInfoMapper;
 import com.ctsi.mapper.TokenMapper;
+import com.ctsi.model.AccessToken;
+import com.ctsi.model.DepartmentInfo;
 import com.ctsi.service.ApiService;
+import org.apache.commons.lang.SystemUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpPost;
@@ -19,12 +24,15 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 @Service
 public class ApiServiceImpl implements ApiService {
     private final Logger log = LoggerFactory.getLogger(ApiServiceImpl.class);
     @Autowired
     TokenMapper tokenMapper;
+    @Autowired
+    DepartmentInfoMapper departmentInfoMapper;
 
     /**
      * @Description 获取用户列表
@@ -37,11 +45,7 @@ public class ApiServiceImpl implements ApiService {
     public JSONObject getUserList() {
         String result = "";
         BufferedReader in = null;
-//		String url = "https://qyapi.weixin.qq.com/cgi-bin/user/simplelist";
-//		int department_id = 1;
-//		int fetch_child = 1;
         try {
-//			URL realUrl = new URL(appendString(url, access_token, department_id, fetch_child));
             //获取企业内部所有用户信息
             URL realUrl = new URL(WeChatApiConstant.USERLISTSTART + tokenMapper.getToken().getToken() + WeChatApiConstant.USERLISTEND);
             // 打开和URL之间的连接
@@ -53,13 +57,6 @@ public class ApiServiceImpl implements ApiService {
                     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             // 建立实际的连接
             connection.connect();
-            // 获取所有响应头字段
-//			Map<String, List<String>> map = connection.getHeaderFields();
-//			// 遍历所有的响应头字段
-//			System.out.println(map);
-//			for (String key : map.keySet()) {
-//				System.out.println(key + "--->" + map.get(key));
-//			}
             // 定义 BufferedReader输入流来读取URL的响应
             in = new BufferedReader(new InputStreamReader(
                     connection.getInputStream()));
@@ -85,12 +82,11 @@ public class ApiServiceImpl implements ApiService {
 
         if (jsonObject.get("errcode").equals(0)) {
             log.info("请求用户列表成功，返回结果：" + jsonObject);
+            JSONArray userlist = (JSONArray) jsonObject.get("userlist");
+            resolveDepartmentName(userlist);
         } else {
             log.info("请求用户列表失败，错误原因：" + jsonObject.get("errmsg"));
         }
-//		JSONArray jsonArray = JSONArray.parseArray(jsonObject.get("userlist").toString());
-//		log.info(jsonArray.toString());
-//		return jsonArray;
         return jsonObject;
     }
 
@@ -182,21 +178,19 @@ public class ApiServiceImpl implements ApiService {
         return result;
     }
 
-    /**
-     * 把请求参数通过?拼接
-     * 示例: https://apiurl?access_token=ACCESS_TOKEN&department_id=DEPARTMENT_ID&fetch_child=FETCH_CHILD
-     */
-    public String appendString(String url, String asccess_token, int department_id, int fetch_child) {
-        String str = url +
-                "?" +
-                "access_token=" +
-                asccess_token +
-                "&" +
-                "department_id=" +
-                department_id +
-                "&" +
-                "fetch_child=" +
-                fetch_child;
-        return str;
+
+    //处理入库部门列表信息
+    private void resolveDepartmentName(JSONArray userlist){
+        for (Object temp:userlist){
+            JSONObject user = (JSONObject)temp;
+            JSONArray deptlist = new JSONArray();
+            for (Object t : (JSONArray)user.get("department")) {
+                DepartmentInfo departmentInfo = departmentInfoMapper.selectById((int)t);
+                deptlist.add(departmentInfo.getDepartmentName());
+            }
+            user.put("department",deptlist);
+//            log.info(user.toString());
+        }
+        log.info("完成处理，用户接口返回部门名称转换");
     }
 }

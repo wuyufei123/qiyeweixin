@@ -26,10 +26,10 @@
     <p style="text-align:center;padding-bottom: 20px">企业微信一键建群应用</p>
     <div style="text-align:center">
         <p style="display:inline;width:20%">设置群名</p>
-        <el-input v-model="message_groupName" placeholder="输入群名称，可为空" maxlength="50" style="width:50%;text-align:center;padding-bottom:10px"></el-input>
+        <el-input v-model="message_groupName" placeholder="输入群名称，可为空" maxlength="50" style="width:50%;text-align:center;padding-bottom:12px;padding-right:20px"></el-input>
         <br/>
         <p style="display:inline;width:20%">设置群主</p>
-        <el-input v-model="message_owner" placeholder="输入群主用户id，可为空" style="width:50%;text-align:center;padding-bottom:10px"></el-input>
+        <el-input v-model="message_owner" placeholder="输入群主用户id，可为空" style="width:50%;text-align:center;padding-bottom:12px;padding-right:20px"></el-input>
 <!--        <el-button size="small" type="primary" plain @click="search" :loading="loading" icon="el-icon-search">查询</el-button>-->
         <br/>
         <el-button size="small" type="primary" plain @click="submit" icon="el-icon-plus">确认建群</el-button>
@@ -89,11 +89,17 @@
             // 格式化状态
             formatState: function (row, column, cellValue, index) {
                 // console.log(row.department);
-                if (row.department[0] === 1) {
-                    return "公司总组";
+                if (row.department.length>1){
+                    return row.department.join(";");
                 } else {
-                    return "未知状态";
+                    return row.department[0];
                 }
+
+                // if (row.department[0] === 1) {
+                //     return "公司总组";
+                // } else {
+                //     return "未知状态";
+                // }
             },
             // 从服务器读取数据
             loadData: function (currentPage, pagesize) {

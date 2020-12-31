@@ -13,4 +13,5 @@ public interface DepartmentInfoMapper {
     //定时入库
     void insert(DepartmentInfo departmentInfo);
     void delete();
+    DepartmentInfo selectById(int id);
 }

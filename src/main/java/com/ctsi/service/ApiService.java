@@ -2,9 +2,9 @@ package com.ctsi.service;
 import com.alibaba.fastjson.JSONObject;
 
 public interface ApiService {
-	 JSONObject getUserList();
+	JSONObject getUserList();
 
-	 JSONObject createChatGroup(JSONObject groupParam);
+	JSONObject createChatGroup(JSONObject groupParam);
 
-	 JSONObject sendMsgChatGroup(String chat_id);
+	JSONObject sendMsgChatGroup(String chat_id);
 }

@@ -51,6 +51,13 @@ public class DepartmentUpdateCron {
             depart.setOrder(Integer.valueOf((Integer) a.get("order")));
             //英文名
             depart.setNameEn((String) a.get("name_en"));
+
+            //组织名结构树
+            if(Integer.valueOf((Integer) a.get("parentid")) == 0){
+                depart.setDepartmentName((String) a.get("name"));
+            }else{
+                depart.setDepartmentName(departmentInfoMapper.selectById(Integer.valueOf((Integer) a.get("parentid"))).getName() + "/" + (String) a.get("name"));
+            }
             //入库
             departmentInfoMapper.insert(depart);
         }

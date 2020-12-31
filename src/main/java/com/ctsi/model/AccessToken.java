@@ -23,4 +23,35 @@ public class AccessToken {
     //应用密钥
     private String corpSecret;
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+
+    public String getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(String corpId) {
+        this.corpId = corpId;
+    }
+
+    public String getCorpSecret() {
+        return corpSecret;
+    }
+
+    public void setCorpSecret(String corpSecret) {
+        this.corpSecret = corpSecret;
+    }
 }
