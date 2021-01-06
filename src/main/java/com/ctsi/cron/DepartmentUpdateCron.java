@@ -33,8 +33,8 @@ public class DepartmentUpdateCron {
     DepartmentInfoMapper departmentInfoMapper;
     public static final Logger logger = LoggerFactory.getLogger(HttpClientHelper.class);
 
-    //一小时跟新一次
-    @Scheduled(cron = "0 0 * * * ? ")
+    //半小时同步一次
+    @Scheduled(cron = "0 */30 * * * ? ")
     public void DepartmentUpdate() {
         //删除旧数据
         departmentInfoMapper.delete();

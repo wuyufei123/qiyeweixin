@@ -15,11 +15,6 @@ public class apiController {
 
 	@Autowired
 	private ApiService apiService;
-//
-//	@Autowired
-//	public apiController(ApiService apiService) {
-//		this.apiService = apiService;
-//	}
 
 	@GetMapping("/test")
 	public String test() {
@@ -39,9 +34,6 @@ public class apiController {
 	public JSONObject createChat(@RequestBody JSONObject groupParam) {
 //		List<String> user_list = new ArrayList<>(); //["cheng","chen","sang"]
 		JSONObject result = apiService.createChatGroup(groupParam);
-//		System.out.println(result);
 		return result;
 	}
-
-
 }

@@ -26,13 +26,14 @@ import java.util.Map;
 public class AccessTokenCron {
     public static final Logger logger = LoggerFactory.getLogger(HttpClientHelper.class);
     //获取token接口
-    public static final String GETTOKEN = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ww353786818bbff142&corpsecret=dCG2rGujuYvbyMzBFikNglg0Y1YQAplu1B8oDp4XTMQ";
+    public static final String GETTOKEN = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=wwbd03f05db969d28d&corpsecret=WWNmUkoYCAFPPFAX4zsCNPr-4-Iog6wf7OLSZZiQNww";
     @Autowired
     TokenMapper tokenMapper;
     @Autowired
     HttpClientHelper httpClientHelper;
 
-    @Scheduled(cron = "0 0 * * * ? ")
+    //半小时同步一次
+    @Scheduled(cron = "0 */30 * * * ? ")
     public void taskToken() {
         Map<String, String> param = new HashMap<>();
         //读库
