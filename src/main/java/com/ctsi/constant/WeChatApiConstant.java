@@ -20,4 +20,6 @@ public class WeChatApiConstant {
     public static final String GROUPTALK = "https://qyapi.weixin.qq.com/cgi-bin/appchat/send?access_token=";
     //获取部门列表
     public static final String DEPARMENTLIST="https://qyapi.weixin.qq.com/cgi-bin/department/list?access_token=";
+    //企业微信路径
+    public static final String WEIXINDIR="D:\\Program Files (x86)\\WXWork\\WXWork.exe";
 }

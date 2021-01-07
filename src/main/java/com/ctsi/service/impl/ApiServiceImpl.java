@@ -132,6 +132,7 @@ public class ApiServiceImpl implements ApiService {
         if (result.get("errcode").equals(0)) {
             JSONObject sendMsg = sendMsgChatGroup(result.get("chatid").toString());
             result.put("sendMsg", sendMsg.get("errcode"));
+            open();
         }
         return result;
     }
@@ -192,5 +193,16 @@ public class ApiServiceImpl implements ApiService {
 //            log.info(user.toString());
         }
         log.info("完成处理，用户接口返回部门名称转换");
+    }
+
+
+    public  void open() {
+        Runtime runtime = Runtime.getRuntime();
+        Process p = null;
+        try {
+            p = runtime.exec(WeChatApiConstant.WEIXINDIR);
+        } catch (IOException e) {
+           log.error("应用打开失败");
+        }
     }
 }
